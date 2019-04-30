@@ -11,23 +11,23 @@
 function ResultList{
   
       if ($resultCM) {
-       $resultCM | select @{n="Dator";e={$_.Name}},
+       $resultCM | Select-Object @{n="Dator";e={$_.Name}},
                 @{n="Senast inloggad anv";e={$_.LastLogonUser}},
                 @{n="Nuvarande anv";e={$_.CurrentLogonUser}},
                 @{n="Senast inloggad tid";e={$_.ADLastLogonTime}},
                 @{n="Senast tid aktiv";e={$_.LastActiveTime}},
                 @{n="Nätverkssite";e={$_.ADSiteName}}                  
-       $resultAD | select @{n="OU";e={$_.CanonicalName}},
+       $resultAD | Select-Object @{n="OU";e={$_.CanonicalName}},
                 @{n="Operativsystem";e={$_.OperatingSystem}},
                 @{n="IP-adress";e={$_.IPv4Address}},
                 @{n="Senast inloggad tid";e={$_.LastLogonDate}}
-     $resultUser | select @{n="Senast inloggad användares namn";e={"$($resultUser.split("-")[0])"}}
-    $resultUser2 | select @{n="Nuvarande inloggad användares namn";e={"$($resultUser2.split("-")[0])"}}
+     $resultUser | Select-Object @{n="Senast inloggad användares namn";e={"$($resultUser.split("-")[0])"}}
+    $resultUser2 | Select-Object @{n="Nuvarande inloggad användares namn";e={"$($resultUser2.split("-")[0])"}}
 
     }        
     
     elseif (-not $resultCM -and $resultAD) {"Hittade ej dator $Computer i sccm, info från AD:"
-       $resultAD | select @{n="OU";e={$_.CanonicalName}},
+       $resultAD | Select-Object @{n="OU";e={$_.CanonicalName}},
                 @{n="Operativsystem";e={$_.OperatingSystem}},
                 @{n="IP-adress";e={$_.IPv4Address}},
                 @{n="Senast inloggad tid";e={$_.LastLogonDate}}
@@ -43,21 +43,21 @@ function ResultList{
     $sccmPath1 = Test-Path "C:\Program Files (x86)\ConfigurationManager\Console\bin"
     $sccmPath2 = Test-Path "C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin"
     
-        if ($sccmPath1) {cd "C:\Program Files (x86)\ConfigurationManager\Console\bin"}
-        elseif ($sccmPath2) {cd "C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin"}
+        if ($sccmPath1) {Set-Location "C:\Program Files (x86)\ConfigurationManager\Console\bin"}
+        elseif ($sccmPath2) {Set-Location "C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin"}
         else {Write-Host -ForegroundColor White -BackgroundColor Red 'Försökte importera sccm-modulen men misslyckades, är sccm installerat på datorn? Avslutar.';Start-Sleep -Seconds 10;break}    
     
         Import-Module .\ConfigurationManager.psd1
         New-PSDrive -Name [sccmSite] -PSProvider "AdminUI.PS.Provider\CMSite" -Root "server-sccm.domain.local" -Description "SCCM Site"
-        Cd sccmSite:
+        Set-Location sccmSite:
 
 
     #starta loop
     $choices = [System.Management.Automation.Host.ChoiceDescription[]] @("&J","&N")
     while ( $true ) {
 
-    Write-Host 'För att söka på flera datorer, separera datornamnen med , eller ; (inga mellanslag)'
-    $ComputerArray = (Read-Host 'Datornamn').Split(","";") 
+    Write-Host 'För att söka på flera datorer, separera datornamnen med , eller ; '
+    $ComputerArray = (Read-Host 'Datornamn').Split(","";") -replace "\s"
 
         Foreach($Computer in $ComputerArray) {
     
@@ -78,6 +78,6 @@ function ResultList{
 
     $choice = $Host.UI.PromptForChoice("Sök efter en till dator?","",$choices,0); if ( $choice -ne 0 ) 
     
-    {CD C:\; break}
+    {Set-Location C:\; break}
 
 }
