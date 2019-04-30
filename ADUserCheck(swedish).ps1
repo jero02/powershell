@@ -149,7 +149,7 @@ function userInfoList {
             @{n="Förvaltning";e={$_.Department}},
             @{n="Chef";e={$_.Manager.Split('-')[0] -replace 'CN='}},
             @{n="msExchHideFromAddressLists";e={$_.msExchHideFromAddressLists}},
-            @{n="Kontostatus";e={$_.Enabled}},
+            @{n="Kontostatus";e={$accountStatus}},
             @{n="Slutdatum";e={if($anv.accountExpires -eq 0) {'Aldrig'} elseif($anv.accountExpires  -eq 9223372036854775807) {'Aldrig'} else {[datetime]::FromFileTime($anv.accountExpires)}}},
             @{n="Lösenord senast ändrat";e={$_.PasswordLastSet}} | Format-List
 }
