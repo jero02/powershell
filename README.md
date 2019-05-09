@@ -1,2 +1,1 @@
-# powershellScripts
-# some scripts are commented in Swedish. 
+Powershell scripts, some are commented in Swedish.
