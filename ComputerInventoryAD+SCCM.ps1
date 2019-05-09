@@ -6,7 +6,7 @@
     2. Search AD for computers
     3. Search SCCM for computers
     4. Search AD for last logged on users
-
+    5. Save result to CSV or show in console
     Result: pscustomobject showing LastLoggedIn,LastActive,NetworkSite,User,LastLogonUser,Name,Email,Phone,Mobile,Title,Manager
 #>
 
