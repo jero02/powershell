@@ -7,7 +7,7 @@
     3. Search SCCM for computers
     4. Search AD for last logged on users
 
-    Result: pscustomobject containing computer info/lastlogontime/user info
+    Result: pscustomobject showing LastLoggedIn,LastActive,NetworkSite,User,LastLogonUser,Name,Email,Phone,Mobile,Title,Manager
 #>
 
 Import-Module ActiveDirectory
