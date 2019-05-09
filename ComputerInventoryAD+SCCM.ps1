@@ -80,11 +80,11 @@ Write-Host "2. Show result in console (might not see all columns)"
 $resultChoice = Read-Host
              
     switch ($resultChoice) {
-    1 {$DataResult | sort "LastActive" | Export-Csv -Encoding UTF8 -Delimiter ";" -NoTypeInformation -NoClobber -Path $env:USERPROFILE\$ouInput$date.csv;
+    1 {$DataResult | sort "LastActive" | Export-Csv -Encoding UTF8 -Delimiter ";" -NoTypeInformation -NoClobber -Path $env:USERPROFILE\$ouInput$date.csv
          Write-Host "Result saved in $env:USERPROFILE\$ouInput$date.csv"}
     2 {$DataResult | Format-Table *}                   
     }
 
 $oneMore = Read-Host "Type Y to search one more time, N to quit" 
 
-} while ($oneMore -eq 'J')
+} while ($oneMore -eq 'Y')
